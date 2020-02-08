@@ -5,4 +5,11 @@ class McQuestionsController < ApplicationController
             format.html { render :index, locals: { questions: questions } }
         end
     end
+
+    def show
+        question = McQuestion.find(params[:id])
+        respond_to do |format|
+            format.html {render :show, locals: { question: question } }
+        end
+    end
 end    
