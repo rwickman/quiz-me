@@ -14,7 +14,9 @@
 require 'test_helper'
 
 class McQuestionTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "fixtures are valid" do
+    mc_questions.each do |q|
+      assert q.valid?, q.errors.full_messages.inspect
+    end
+  end  
 end
