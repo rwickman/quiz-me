@@ -18,5 +18,36 @@ class McQuestionTest < ActiveSupport::TestCase
     mc_questions.each do |q|
       assert q.valid?, q.errors.full_messages.inspect
     end
-  end  
+  end
+
+  test "question presence not valid" do
+    q = mc_questions(:one)
+    q.question = nil
+    assert_not q.valid?
+    q.question = ""
+    assert_not q.valid?
+  end
+
+  test "answer presence not valid" do
+    q = mc_questions(:one)
+    q.answer = nil
+    assert_not q.valid?
+    q.answer = ""
+    assert_not q.valid?
+  end
+  
+  test "distractor_1 presence not valid" do
+    q = mc_questions(:one)
+    q.distractor_1 = nil
+    assert_not q.valid?
+    q.distractor_1 = ""
+    assert_not q.valid?
+  end
+
+  test "question uniqueness not valid" do
+    one = mc_questions(:one)
+    two = mc_questions(:two)
+    one.question = two.question
+    assert_not one.valid?
+  end
 end
