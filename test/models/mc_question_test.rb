@@ -50,4 +50,18 @@ class McQuestionTest < ActiveSupport::TestCase
     one.question = two.question
     assert_not one.valid?
   end
+
+  test "choices cannot be duplicate not valid" do
+    q = mc_questions(:one)
+    q.distractor_1 = q.answer
+    assert_not q.valid?
+  
+    q = mc_questions(:one)
+    q.distractor_2 = q.answer
+    assert_not q.valid?
+  
+    q = mc_questions(:one)
+    q.distractor_1 = q.distractor_2
+    assert_not q.valid?
+  end  
 end
