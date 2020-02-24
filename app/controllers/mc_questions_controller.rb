@@ -12,4 +12,33 @@ class McQuestionsController < ApplicationController
             format.html {render :show, locals: { question: question } }
         end
     end
+
+    def new
+        question = McQuestion.new
+        respond_to do |format|
+          format.html { render :new, locals: { question: question } }
+        end
+    end
+    
+    def create
+        # new object from params
+        question = McQuestion.new(params.require(:mc_question).permit(:question, :answer, :distractor_1, :distractor_2))
+        
+        respond_to do |format|
+            format.html do
+                if question.save
+                    # success message
+                    flash[:success] = "Question saved successfully"
+                    # redirect to index
+                    redirect_to mc_questions_url
+                else
+                    # error message
+                    flash.now[:error] = "Error: Question could not be saved"
+                    # render new
+                    render :new, locals: { question: question }
+                end
+            end
+        end
+    end
+            
 end    
