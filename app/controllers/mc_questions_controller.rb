@@ -77,10 +77,10 @@ class McQuestionsController < ApplicationController
         # respond_to block
         respond_to do |format|
             format.html do
-            # success message
-            flash[:success] = 'Question removed successfully'
-            # redirect to index
-            redirect_to mc_questions_url
+                # success message
+                flash[:success] = 'Question removed successfully'
+                # redirect to index
+                redirect_to mc_questions_url
             end
         end
         # success message
