@@ -1,10 +1,10 @@
 class McQuestionsController < ApplicationController
-    def index
-        questions = McQuestion.all
-        respond_to do |format|
-            format.html { render :index, locals: { questions: questions } }
-        end
-    end
+    # def index
+    #     questions = McQuestion.all
+    #     respond_to do |format|
+    #         format.html { render :index, locals: { questions: questions } }
+    #     end
+    # end
 
     def show
         question = McQuestion.find(params[:id])
@@ -52,22 +52,23 @@ class McQuestionsController < ApplicationController
     def update
         # load existing object again from URL param
         question = McQuestion.find(params[:id])
-
+        # respond_to block
         respond_to do |format|
-            format.html do
-                if question.update(params.require(:mc_question).permit(:question, :answer, :distractor_1, :distractor_2))
-                    # success message
-                    flash[:success] = 'Question updated successfully'
-                    # redirect to index
-                    redirect_to mc_questions_url
-                else
-                  # error message
-                  flash.now[:error] = "Error: Question could not be updated"
-                  # render edit
-                  render :edit, locals: {question: question }
-                end
+          format.html do
+            if question.update(params.require(:mc_question).permit(:question, :answer, :distractor_1, :distractor_2))
+              # success message
+              flash[:success] = 'Question updated successfully'
+              # redirect to index
+              redirect_to quiz_url(question.quiz)
+            else
+              # error message
+              flash.now[:error] = 'Error: Question could not be updated'
+              # render edit
+              render :edit, locals: { question: question }
+            end
+          end
         end
-    end
+      end      
 
     def destroy
         # load existing object again from URL param
@@ -76,16 +77,15 @@ class McQuestionsController < ApplicationController
         question.destroy
         # respond_to block
         respond_to do |format|
-            format.html do
-                # success message
-                flash[:success] = 'Question removed successfully'
-                # redirect to index
-                redirect_to mc_questions_url
-            end
+          format.html do
+            # success message
+            flash[:success] = 'Question removed successfully'
+            # redirect to index
+            redirect_to quiz_url(question.quiz)
+          end
         end
-        # success message
-        # redirect to index
-    end   
+      end
+         
 end
       
 
